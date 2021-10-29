@@ -1,5 +1,8 @@
 <?php
 
+namespace Unit;
+
+use TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Services\RefererHash\RefererHashBaseService;

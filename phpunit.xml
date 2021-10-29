@@ -5,8 +5,11 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Application Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+        <testsuite name="Unit Tests">
+            <directory suffix="Test.php">./tests/unit</directory>
+        </testsuite>
+        <testsuite name="Integration Tests">
+            <directory suffix="Test.php">./tests/integration</directory>
         </testsuite>
     </testsuites>
 
@@ -15,13 +18,14 @@
             <directory suffix=".php">./app</directory>
         </include>
         <report>
-            <html outputDirectory="test/reports/coverage"/>
+            <html outputDirectory="tests/reports/coverage"/>
         </report>
     </coverage>
 
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
+        <env name="LOG_CHANNEL" value="daily"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
     </php>
 </phpunit>

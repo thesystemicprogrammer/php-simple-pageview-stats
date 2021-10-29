@@ -2,6 +2,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class CorsMiddleware
 {
@@ -21,10 +23,10 @@ class CorsMiddleware
             'Access-Control-Max-Age'           => '0',
             'Access-Control-Allow-Headers'     => 'Content-Type, Authorization'
         ];
-
+    
         if ($request->isMethod('OPTIONS'))
         {
-            return response()->json('{"method":"OPTIONS"}', 200, $headers);
+            return response()->json('{"method":"OPTIONS"}', Response::HTTP_OK, $headers);
         }
 
         $response = $next($request);

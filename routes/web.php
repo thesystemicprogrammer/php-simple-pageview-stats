@@ -13,8 +13,8 @@
 |
 */
 $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
-    $router->get('/pageview', 'PageviewController@getAll');
-    $router->get('/pageview/count', 'PageviewController@getAllCount');
-    $router->post('/pageview', 'PageviewController@create');
+    $router->get('/pageview', 'PageviewController@getPageviews');
+    $router->get('/pageview/period', 'PageviewController@getPageviewsGroupedByPeriods');
+    $router->post('/pageview', ['middleware' => 'abort-localhost', 'uses' => 'PageviewController@createPageview']);
 });
 

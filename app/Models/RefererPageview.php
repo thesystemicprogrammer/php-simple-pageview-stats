@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Database\Factories\RefererPageviewFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pageview extends Model
+class RefererPageview extends Model
 {
     use HasFactory;
-    
+
     /**
      * Don't use create and modified timestamps
      *
@@ -22,6 +23,11 @@ class Pageview extends Model
      * @var array
      */
     protected $fillable = [
-        'uri', 'timestamp', 'views'
+        'uri', 'timestamp', 'referer_hash'
     ];
+
+    protected static function newFactory()
+    {
+        return RefererPageviewFactory::new();
+    }
 }

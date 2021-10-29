@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePageviewsTable extends Migration
+class CreateRefererPageviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreatePageviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pageviews', function (Blueprint $table) {
-            $table->id();
+        Schema::create('referer_pageviews', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('uri');
             $table->integer('timestamp');
             $table->char('refererHash', 90);

@@ -1,5 +1,8 @@
 <?php
+namespace Unit;
 
+use TestCase;
+use Dotenv\Dotenv;
 use Illuminate\Support\Carbon;
 use App\Services\TimeBucket\TimeBucketCalculatorService;
 
@@ -26,7 +29,7 @@ class TimeBucketCalculatorServiceTest extends TestCase
     }
 
     public function testCalculationWithSetTimeBucketPeriod(): void {
-        Dotenv\Dotenv::createUnsafeMutable(dirname(__DIR__), 'tests/env/.env-timebucket.test')->load();
+        Dotenv::createUnsafeMutable(dirname(__DIR__), 'env/.env-timebucket.test')->load();
         Carbon::setTestNow(Carbon::parse('2021-10-24 19:31:32'));
         $calculator = new TimeBucketCalculatorService();
         

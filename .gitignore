@@ -6,4 +6,4 @@ Homestead.yaml
 .env_prod
 .phpunit.result.cache
 /.vscode
-/test/reports
+/tests/reports

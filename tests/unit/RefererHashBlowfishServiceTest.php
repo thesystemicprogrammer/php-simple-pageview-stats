@@ -1,12 +1,15 @@
 <?php
 
-use App\Services\RefererHash\RefererHashBlowfishService;
+namespace Unit;
+
+use TestCase;
 use Illuminate\Http\Request;
+use App\Services\RefererHash\RefererHashBlowfishService;
 
-class RefererHashBlowfishServiceTest extends TestCase
-{
 
-    private Request $request; 
+class RefererHashBlowfishServiceTest extends TestCase {
+
+    private Request $request;
 
     public function testSameRequestAndSameTimestampLeadsToEqualHash(): void {
 
@@ -19,17 +22,19 @@ class RefererHashBlowfishServiceTest extends TestCase
             ->method('ip')
             ->willReturnOnConsecutiveCalls(
                 "192.168.1.214",
-                "192.168.1.214");
+                "192.168.1.214"
+            );
         $this->request
-                ->expects($this->exactly(2))
-                ->method('userAgent')
-                ->willReturnOnConsecutiveCalls(
-                    "agent",
-                    "agent");
+            ->expects($this->exactly(2))
+            ->method('userAgent')
+            ->willReturnOnConsecutiveCalls(
+                "agent",
+                "agent"
+            );
 
         $firstHash = $service->createRefererHash($this->request, $timestamp);
         $secondHash = $service->createRefererHash($this->request, $timestamp);
-                    
+
         $this->assertEquals($firstHash, $secondHash);
     }
 
@@ -42,17 +47,19 @@ class RefererHashBlowfishServiceTest extends TestCase
             ->method('ip')
             ->willReturnOnConsecutiveCalls(
                 "192.168.1.214",
-                "192.168.1.214");
+                "192.168.1.214"
+            );
         $this->request
-                ->expects($this->exactly(2))
-                ->method('userAgent')
-                ->willReturnOnConsecutiveCalls(
-                    "agent",
-                    "agent");
+            ->expects($this->exactly(2))
+            ->method('userAgent')
+            ->willReturnOnConsecutiveCalls(
+                "agent",
+                "agent"
+            );
 
         $firstHash = $service->createRefererHash($this->request, time());
         $secondHash = $service->createRefererHash($this->request, time() + 1);
-                    
+
         $this->assertNotEquals($firstHash, $secondHash);
     }
 
@@ -66,17 +73,19 @@ class RefererHashBlowfishServiceTest extends TestCase
             ->method('ip')
             ->willReturnOnConsecutiveCalls(
                 "192.168.1.214",
-                "192.168.1.215");
+                "192.168.1.215"
+            );
         $this->request
-                ->expects($this->exactly(2))
-                ->method('userAgent')
-                ->willReturnOnConsecutiveCalls(
-                    "agent",
-                    "agent");
+            ->expects($this->exactly(2))
+            ->method('userAgent')
+            ->willReturnOnConsecutiveCalls(
+                "agent",
+                "agent"
+            );
 
         $firstHash = $service->createRefererHash($this->request, $timestamp);
         $secondHash = $service->createRefererHash($this->request, $timestamp);
-                    
+
         $this->assertNotEquals($firstHash, $secondHash);
     }
 }
