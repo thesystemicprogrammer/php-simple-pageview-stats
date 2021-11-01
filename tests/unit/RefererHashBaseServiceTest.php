@@ -2,6 +2,7 @@
 
 namespace Unit;
 
+use App\Events\NewSaltEvent;
 use TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -14,6 +15,7 @@ class RefererHashBaseServiceTest extends TestCase
    
     public function testCreateNewTimeBucketSaltString(): void {
 
+        $this->withoutEvents();
         $service = new ConcreteTestableRefererHashBaseService();
         
         $salt = $service->testableCreateNewTimeBucketSalt(time());
@@ -23,6 +25,7 @@ class RefererHashBaseServiceTest extends TestCase
 
     public function testCreateNewTimeBucketSaltCache(): void {
 
+        $this->withoutEvents();
         Cache::flush();
         $service = new ConcreteTestableRefererHashBaseService();
         $timestamp = time();
@@ -34,6 +37,7 @@ class RefererHashBaseServiceTest extends TestCase
 
     public function testReturnCachedSaltIfAlreadyLocked(): void {
 
+        $this->withoutEvents();
         Cache::flush();
         $service = new ConcreteTestableRefererHashBaseService();
         $timestamp = time();
@@ -44,6 +48,12 @@ class RefererHashBaseServiceTest extends TestCase
         $salt = $service->testableCreateNewTimeBucketSalt($timestamp);
 
         $this->assertEquals(self::SALT_IF_LOCKED, $salt);
+    }
+
+    public function testFireEventWhenNewSaltIsCreated(): void {
+        $this->expectsEvents(NewSaltEvent::class);
+        $service = new ConcreteTestableRefererHashBaseService();
+        $service->testableCreateNewTimeBucketSalt(time());
     }
 
 }

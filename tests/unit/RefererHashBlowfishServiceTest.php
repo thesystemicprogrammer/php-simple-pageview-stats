@@ -12,7 +12,8 @@ class RefererHashBlowfishServiceTest extends TestCase {
     private Request $request;
 
     public function testSameRequestAndSameTimestampLeadsToEqualHash(): void {
-
+        
+        $this->withoutEvents();
         $service = new RefererHashBlowFishService();
         $timestamp = time();
 
@@ -40,6 +41,7 @@ class RefererHashBlowfishServiceTest extends TestCase {
 
     public function testSameRequestAndDifferentTimestampLeadsToDifferentHash(): void {
 
+        $this->withoutEvents();
         $service = new RefererHashBlowFishService();
         $this->request = $this->createStub('Illuminate\Http\Request');
         $this->request
@@ -65,6 +67,7 @@ class RefererHashBlowfishServiceTest extends TestCase {
 
     public function testDifferentRequestAndSameTimestampLeadsToDifferentHash(): void {
 
+        $this->withoutEvents();
         $service = new RefererHashBlowFishService();
         $timestamp = time();
         $this->request = $this->createStub('Illuminate\Http\Request');

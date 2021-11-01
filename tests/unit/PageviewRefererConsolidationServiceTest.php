@@ -24,7 +24,7 @@ class PageviewRefererConsolidationServiceTest extends TestCase {
     public function testEmptyDatabasesToConsolidate(): void {
         $consolidator = new PageviewRefererConsolidationService($this->calculator);
 
-        $consolidator->consolidatePageviews($this->calculator);
+        $consolidator->consolidatePageviews();
 
         $this->assertEmpty(RefererPageview::all());
     }
@@ -36,7 +36,7 @@ class PageviewRefererConsolidationServiceTest extends TestCase {
         Carbon::setTestNow(Carbon::parse('2021-10-24 22:15:20'));
         $consolidator = new PageviewRefererConsolidationService($this->calculator);
 
-        $consolidator->consolidatePageviews($this->calculator);
+        $consolidator->consolidatePageviews();
 
         $this->assertEmpty(RefererPageview::all());
         $this->assertEquals(2, Pageview::all()->count());
@@ -44,13 +44,19 @@ class PageviewRefererConsolidationServiceTest extends TestCase {
         Carbon::setTestNow();
     }
 
-    public function testCalculationWithSetTimeBucketPeriod(): void {
-        Dotenv::createUnsafeMutable(dirname(__DIR__), 'env/.env-timebucket.test')->load();
-        Carbon::setTestNow(Carbon::parse('2021-10-24 19:31:32'));
-        $calculator = new TimeBucketCalculatorService();
+    public function testReferPageviewsFromCurrentBucketRemain(): void {
+        Carbon::setTestNow(Carbon::parse('2021-10-24 16:31:32'));
+        RefererPageview::factory()->count(5)->create();
+        RefererPageview::factory()->count(5)->setAlternativeUri()->create();
+        Carbon::setTestNow(Carbon::parse('2021-10-24 22:15:20'));
+        RefererPageview::factory()->count(5)->create();
+        RefererPageview::factory()->count(5)->setAlternativeUri()->create();
+        $consolidator = new PageviewRefererConsolidationService($this->calculator);
 
-        $timestamp = $calculator->calculateTimeBucketTimestamp();
-        $this->assertEquals($timestamp, Carbon::parse('2021-10-24 18:00:00')->timestamp);
+        $consolidator->consolidatePageviews();
+
+        $this->assertEquals(10, RefererPageview::all()->count());
+        $this->assertEquals(2, Pageview::all()->count());
 
         Carbon::setTestNow();
     }
