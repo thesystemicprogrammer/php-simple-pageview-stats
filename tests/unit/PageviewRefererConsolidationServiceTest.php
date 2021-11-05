@@ -3,7 +3,6 @@
 namespace Unit;
 
 use TestCase;
-use Dotenv\Dotenv;
 use App\Models\Pageview;
 use App\Models\RefererPageview;
 use Illuminate\Support\Carbon;

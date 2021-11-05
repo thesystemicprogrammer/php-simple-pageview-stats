@@ -14,11 +14,6 @@ class AuthFailureTest extends TestCase {
         parent::setup();
     }
 
-    public function testUnauthorizedPostNoHeader(): void {
-        $this->post('/api/pageview');
-        $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
-
-    }
     public function testUnauthorizedGetNoHeader(): void {
         $this->get('/api/pageview');
         $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
@@ -29,11 +24,7 @@ class AuthFailureTest extends TestCase {
         $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
     }
 
-    public function testUnauthorizedPostWithHeader(): void {
-        $this->json('POST', '/api/pageview', [], ['Authorization' => 'nonsense']);
-        $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
 
-    }
     public function testUnauthorizedGetWithHeader(): void {
         $this->json('GET', '/api/pageview', [], ['Authorization' => 'nonsense']);
         $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
@@ -43,6 +34,4 @@ class AuthFailureTest extends TestCase {
         $this->json('GET', '/api/pageview/period', [], ['Authorization' => 'nonsense']);
         $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
     }
-
-   
 }

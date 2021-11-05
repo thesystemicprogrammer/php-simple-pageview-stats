@@ -19,14 +19,13 @@ class PageviewControllerTest extends TestCase {
     }
 
     public function testPostPageview(): void {
-        Dotenv::createUnsafeMutable(dirname(__DIR__), 'env/.env-authorization.test')->load();
-        $this->json('POST', '/api/pageview', ['uri' => '/newpage'], ['Authorization' => 'post_test']);
+        $this->json('POST', '/api/public/pageview', ['uri' => '/newpage']);
         $this->assertResponseStatus(Response::HTTP_CREATED);
     }
 
     public function testPostPageviewAlreadyExists(): void {
-        $this->json('POST', '/api/pageview', ['uri' => '/newpage'], ['Authorization' => 'post_test']);
-        $this->json('POST', '/api/pageview', ['uri' => '/newpage'], ['Authorization' => 'post_test']);
+        $this->json('POST', '/api/public/pageview', ['uri' => '/newpage']);
+        $this->json('POST', '/api/public/pageview', ['uri' => '/newpage']);
         $this->assertResponseStatus(Response::HTTP_OK);
     }
 
