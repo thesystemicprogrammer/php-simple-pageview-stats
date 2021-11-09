@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(RefererHashCreator::class, function ($app) {
+        $this->app->singleton(RefererHashCreator::class, function ($app) {
             if (env('REFERER_HASH_ALGORITHM') == 'BLOWFISH') {
                 return new RefererHashBlowfishService();
             }

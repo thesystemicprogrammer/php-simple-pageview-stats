@@ -14,7 +14,7 @@ class AppServiceProviderTest extends TestCase {
     protected $originalExceptionHandler;
 
     public function testReferHashBlowfish(): void {
-        config(['REFERER_HASH_ALGORITHM' => 'BLOWFISH']);
+        Dotenv::createUnsafeMutable(dirname(__DIR__), 'env/.env-referer-hash-blowfish.test')->load();
 
         $provider = new AppServiceProvider($this->app);
         $provider->register();
@@ -23,7 +23,7 @@ class AppServiceProviderTest extends TestCase {
     }
 
     public function testInvalidRefererHashAlgorithmInEnv(): void {
-        Dotenv::createUnsafeMutable(dirname(__DIR__), 'env/.env-referer-hash.test')->load();
+        Dotenv::createUnsafeMutable(dirname(__DIR__), 'env/.env-referer-hash-nonexistant.test')->load();
         $this->expectException(InvalidRefererHashAlgorithmException::class);
 
         $provider = new AppServiceProvider($this->app);
