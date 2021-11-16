@@ -33,7 +33,6 @@ class PageviewController extends Controller {
             return response()->json(['message' => 'FROM Timestamp must not be bigger than the TO timestamp'], Response::HTTP_BAD_REQUEST); 
         }
 
-        Log::Debug("From " . $fromTimestamp);
         $result = DB::table('pageviews')
             ->selectRaw('timestamp, uri, views')
             ->whereBetween('timestamp', [$fromTimestamp, $toTimestamp])

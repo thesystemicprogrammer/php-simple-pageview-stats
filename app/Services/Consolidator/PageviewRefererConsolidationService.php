@@ -14,10 +14,6 @@ class PageviewRefererConsolidationService {
         $this->calculatorService = $calculatorService;
     }
 
-    public function __invoke(TimeBucketCalculatorService $calculatorService): void {
-        $this->consolidatePageviews($calculatorService);
-    }
-
     public function consolidatePageviews(): void {
         DB::transaction(function () {
             $timestamp = $this->calculatorService->calculateTimeBucketTimestamp();

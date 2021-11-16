@@ -18,7 +18,7 @@ class AbortLocalhost
     public function handle(Request $request, Closure $next)
     {
         if ($request->ip() =='::1' || $request->ip() == '127.0.0.1') {
-            return response()->json(['Warning' => 'Calls from localhost are not counted'], Response::HTTP_BAD_REQUEST,);
+            return response()->json(['Warning' => 'Calls from localhost are not counted'], Response::HTTP_BAD_REQUEST);
         }
 
         return $next($request);

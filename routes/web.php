@@ -12,10 +12,11 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->post('/api/public/pageview', ['middleware' => 'abort-localhost', 'uses' => 'PageviewController@createPageview']);
+
 
 $router->group(['prefix' => 'api', 'middleware' => 'auth'], function () use ($router) {
     $router->get('/pageview', 'PageviewController@getPageviews');
     $router->get('/pageview/period', 'PageviewController@getPageviewsGroupedByPeriods');
+    $router->post('/pageview', ['middleware' => 'abort-localhost', 'uses' => 'PageviewController@createPageview']);
 });
 

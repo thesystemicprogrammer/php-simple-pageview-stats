@@ -24,14 +24,26 @@ class AuthFailureTest extends TestCase {
         $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
     }
 
+    public function testUnauthorizedGetPostNoHeader(): void {
+        $this->post('/api/pageview');
+        $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
 
     public function testUnauthorizedGetWithHeader(): void {
-        $this->json('GET', '/api/pageview', [], ['Authorization' => 'nonsense']);
+        $this->json('GET', '/api/pageview', [], ['X-API-KEY' => 'nonsense']);
         $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
     }
 
     public function testUnauthorizedGetPeriodWithHeader(): void {
-        $this->json('GET', '/api/pageview/period', [], ['Authorization' => 'nonsense']);
+        $this->json('GET', '/api/pageview/period', [], ['X-API-KEY' => 'nonsense']);
         $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
     }
+
+    public function testUnauthorizedGetPostWithHeader(): void {
+        $this->json('POST', '/api/pageview', [], ['X-API-KEY' => 'nonsense']);
+        $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    
 }

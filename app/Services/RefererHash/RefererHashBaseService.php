@@ -5,6 +5,7 @@ namespace App\Services\RefererHash;
 use App\Events\NewSaltEvent;
 use App\Services\TimeBucket\TimeBucketCalculatorService;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;
 
 abstract class RefererHashBaseService implements RefererHashCreator {
@@ -16,7 +17,7 @@ abstract class RefererHashBaseService implements RefererHashCreator {
             $salt = $this->createSalt();
             Cache::add($timestamp, $salt, $this->calculateCacheTTL());
             $lock->release();
-            event(new NewSaltEvent);
+            Event::dispatch(new NewSaltEvent);
         } else {
             $salt = $lock->block(5, function () use ($timestamp) {
                 Log::warning('Concurrent salt generation');

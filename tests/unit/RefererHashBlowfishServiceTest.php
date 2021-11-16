@@ -2,18 +2,19 @@
 
 namespace Unit;
 
+use App\Events\NewSaltEvent;
 use TestCase;
 use Illuminate\Http\Request;
 use App\Services\RefererHash\RefererHashBlowfishService;
 
 
-class RefererHashBlowfishServiceTest extends TestCase {
-
+class RefererHashBlowfishServiceTest extends TestCase
+{
     private Request $request;
 
-    public function testSameRequestAndSameTimestampLeadsToEqualHash(): void {
-        
-        $this->withoutEvents();
+    public function testSameRequestAndSameTimestampLeadsToEqualHash(): void
+    {
+        $this->expectsEvents(NewSaltEvent::class);
         $service = new RefererHashBlowFishService();
         $timestamp = time();
 
@@ -39,9 +40,9 @@ class RefererHashBlowfishServiceTest extends TestCase {
         $this->assertEquals($firstHash, $secondHash);
     }
 
-    public function testSameRequestAndDifferentTimestampLeadsToDifferentHash(): void {
-
-        $this->withoutEvents();
+    public function testSameRequestAndDifferentTimestampLeadsToDifferentHash(): void
+    {
+        $this->expectsEvents(NewSaltEvent::class);
         $service = new RefererHashBlowFishService();
         $this->request = $this->createStub('Illuminate\Http\Request');
         $this->request
@@ -65,9 +66,9 @@ class RefererHashBlowfishServiceTest extends TestCase {
         $this->assertNotEquals($firstHash, $secondHash);
     }
 
-    public function testDifferentRequestAndSameTimestampLeadsToDifferentHash(): void {
-
-        $this->withoutEvents();
+    public function testDifferentRequestAndSameTimestampLeadsToDifferentHash(): void
+    {
+        $this->expectsEvents(NewSaltEvent::class);
         $service = new RefererHashBlowFishService();
         $timestamp = time();
         $this->request = $this->createStub('Illuminate\Http\Request');
