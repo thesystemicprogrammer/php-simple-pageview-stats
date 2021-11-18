@@ -35,6 +35,27 @@ class AuthProviderJWTTest extends TestCase
 
         $this->assertResponseStatus(Response::HTTP_OK);
     }
+
+    public function testGetPagviewWithInvalidJWT(): void
+    {
+        $payload = array(
+            'iss' => 'http://example.org',
+            'aud' => 'http://example.com',
+            'iat' => time(),
+       //     'exp' => time() + 60 * 60,
+            'roles' => ['pageview']
+        );
+        $jwt = JWT::encode($payload, "USE_DIFFERENT_SECRET", 'HS256');
+        $this->json('GET', '/api/pageview', ['uri' => '/newpage'], ['Authorization' => 'Bearer ' . $jwt]);
+
+        $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function testGetPagviewWithNonBearerAuth(): void
+    {
+        $this->json('GET', '/api/pageview', ['uri' => '/newpage'], ['Authorization' => 'Xdfkjdföasd']);
+        $this->assertResponseStatus(Response::HTTP_UNAUTHORIZED);
+    }
    
     private function disableAbortLocalhostMiddleware(): void {
         $this->app->instance(\App\Http\Middleware\AbortLocalhost::class, new class {

@@ -16,17 +16,18 @@ class JWTDecoder
 
         if (!isset($jwtToken)) {
             $isValid = false;
-        }
+        } else {
 
-        try {
-            $jwtObject = JWT::decode($jwtToken, new Key(env("JWT_HS256_SECRET"), 'HS256'));
+            try {
+                $jwtObject = JWT::decode($jwtToken, new Key(env("JWT_HS256_SECRET"), 'HS256'));
 
-            if (!in_array('pageview', $jwtObject->roles)) {
+                if (!in_array('pageview', $jwtObject->roles)) {
+                    $isValid = false;
+                }
+            } catch (Exception $e) {
                 $isValid = false;
+                Log::debug('JWT Decode exception: ', ['errorMessage' => $e]);
             }
-        } catch (Exception $e) {
-            $isValid = false;
-            Log::debug('JWT Decode exception: ', ['errorMessage' => $e]);
         }
 
         return $isValid;

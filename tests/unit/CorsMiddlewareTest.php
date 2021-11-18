@@ -15,7 +15,7 @@ class CorsMiddlewareTest extends TestCase {
         'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
         'Access-Control-Allow-Credentials' => 'true',
         'Access-Control-Max-Age'           => '0',
-        'Access-Control-Allow-Headers'     => 'Content-Type, Authorization'
+        'Access-Control-Allow-Headers'     => 'Content-Type, Authorization, X-API-KEY'
     ];
 
     public function testOptionsRequest(): void {
